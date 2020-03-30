@@ -7,8 +7,8 @@
 </template>
 
 <script>
-    import AppNavigation from "../components/AppNavigation";
-    import DrawerComponent from "../components/DrawerComponent";
+    import AppNavigation from "../components/Layouts/AppNavigation";
+    import DrawerComponent from "../components/Layouts/DrawerComponent";
     export default {
         name: "MainLayout",
         components: {DrawerComponent, AppNavigation},

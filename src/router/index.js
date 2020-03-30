@@ -11,9 +11,19 @@ const routes = [
     component: () => import('../layouts/MainLayout'),
     children: [
       {
-        name: "Home",
-        path: "/home",
+        name: 'Home',
+        path: '/home',
         component: () => import('../views/Home')
+      },
+      {
+        name: 'TVSeries',
+        path: '/tv',
+        component: () => import('../views/TVSeries')
+      },
+      {
+        name: 'Upload',
+        path: '/upload',
+        component: () => import('../views/Upload')
       }
     ]
   },

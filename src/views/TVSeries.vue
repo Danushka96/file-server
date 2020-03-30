@@ -7,9 +7,6 @@
                 <v-row
                 >
                     <video-card></video-card>
-                    <video-card></video-card>
-                    <video-card></video-card>
-                    <video-card></video-card>
                 </v-row>
             </v-container>
         </v-content>
@@ -28,14 +25,12 @@
 
 <script>
     import VideoCard from "../components/VideoCard";
-
     export default {
-        components: {VideoCard},
-        props: {
-            source: String,
-        },
-        data: () => ({
-            // dialog: false,
-        }),
+        name: "TVSeries",
+        components: {VideoCard}
     }
 </script>
+
+<style scoped>
+
+</style>
