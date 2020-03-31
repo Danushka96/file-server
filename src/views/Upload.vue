@@ -100,7 +100,7 @@
 
                 // sending file to the backend
                 axios
-                    .post("http://localhost:4500/upload", formData, {
+                    .post("http://localhost:8099/upload", formData, {
                         onUploadProgress: ProgressEvent => {
                             this.progress = Math.round((ProgressEvent.loaded / ProgressEvent.total) * 100)
                                 + "%";
