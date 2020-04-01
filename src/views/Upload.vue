@@ -14,6 +14,31 @@
                         outlined
                         v-model="folderName"
                 ></v-text-field>
+                <v-row justify="space-around" style="margin-top: -20px">
+                    <v-col cols="12" sm="8">
+                        <v-file-input
+                                accept="image/png, image/jpeg, image/bmp"
+                                label="Banner"
+                                outlined
+                                placeholder="Pick a Banner for Preview"
+                                prepend-icon="mdi-camera"
+                                style="margin-top: -5px"
+                                v-model="banner"
+                        ></v-file-input>
+                    </v-col>
+                    <v-col cols="12" sm="4">
+                        <v-btn
+                                :disabled="banner==null"
+                                :loading="loadingBannerUpload"
+                                @click="uploadBanner()"
+                                class="ma-2 white--text"
+                                color="blue-grey"
+                        >
+                            Upload
+                            <v-icon dark right>mdi-cloud-upload</v-icon>
+                        </v-btn>
+                    </v-col>
+                </v-row>
                 <v-file-input
                         :show-size="1000"
                         color="deep-purple accent-4"
@@ -90,14 +115,17 @@
                 types: ["movies", "tv-series", "software", "others"],
                 folderType: '',
                 folderName: '',
+                banner: null,
+                loadingBannerUpload: false,
+                bannerUrl: '',
             };
         },
         methods: {
             onUploadFile() {
                 const formData = new FormData();
                 this.files.forEach(file => formData.append("file_" + Math.random(), file));
-                formData.append("path", this.folderType+"\\"+this.folderName);
-
+                formData.append("path", this.folderType + "\\" + this.folderName);
+                formData.append("bannerUrl", this.bannerUrl);
                 // sending file to the backend
                 axios
                     .post("http://localhost:8099/upload", formData, {
@@ -116,6 +144,27 @@
                         this.responseSnackBar = true;
                         this.message = "Something went wrong with the server, Try Again";
                         console.log(err);
+                    });
+            },
+            uploadBanner() {
+                this.loadingBannerUpload = true;
+                const formData = new FormData();
+                formData.append("banner", this.banner);
+
+                // sending file to the backend
+                axios
+                    .post("http://localhost:8099/media", formData)
+                    .then(() => {
+                        this.responseSnackBar = true;
+                        this.message = "Uploaded Successfully";
+                        this.loadingBannerUpload = false;
+                        this.bannerUrl = this.bannerUrl.name
+                    })
+                    .catch(err => {
+                        this.responseSnackBar = true;
+                        this.message = "Something went wrong with the server, Try Again";
+                        console.log(err);
+                        this.loadingBannerUpload = false;
                     });
             }
         }

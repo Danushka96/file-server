@@ -29,7 +29,7 @@ router.post('/', (req, res) => {
             }
             let fileObj = new File();
             fileObj.fileName = file.name;
-            fileObj.mediaURL = "https://img.yts.mx/assets/images/movies/queen_slim_2019/medium-cover.jpg";
+            fileObj.mediaURL = `${process.env.INIT_CWD}\\public\\media\\${req.body.bannerUrl}`;
             fileObj.type = req.body.path.split('\\')[0];
             fileObj.path = path + '\\' + file.name;
             insertFile(fileObj);
