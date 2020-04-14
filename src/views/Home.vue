@@ -1,16 +1,16 @@
 <template>
-    <v-app id="inspire">
+    <div>
         <v-content>
-            <v-container
-                    class="fill-height"
-            >
-                <v-row
-                >
-                    <video-card></video-card>
-                    <video-card></video-card>
-                    <video-card></video-card>
-                    <video-card></video-card>
-                </v-row>
+            <v-container>
+                <video-card></video-card>
+                <video-card></video-card>
+                <video-card></video-card>
+                <video-card></video-card>
+                <video-card></video-card>
+                <video-card></video-card>
+                <video-card></video-card>
+                <video-card></video-card>
+                <video-card></video-card>
             </v-container>
         </v-content>
         <v-btn
@@ -23,7 +23,7 @@
         >
             <v-icon>mdi-plus</v-icon>
         </v-btn>
-    </v-app>
+    </div>
 </template>
 
 <script>
