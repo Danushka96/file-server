@@ -8,4 +8,4 @@ mongoose.connect('mongodb://localhost:27017/file-service', {useNewUrlParser: tru
     }
 });
 
-require('./file.model');
+require('./document.model');

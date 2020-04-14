@@ -1,10 +1,10 @@
 const express = require('express');
 let router = express.Router();
 const mongoose = require('mongoose');
-const File = mongoose.model('File');
+const Document = mongoose.model('Document');
 
 router.get('/', (req, res) => {
-    File.find((err, docs) => {
+    Document.find((err, docs) => {
         if (!err) {
             res.send(docs)
         } else {
@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
 });
 
 router.get("/:id", (req, res) => {
-    File.findById(req.params.id, (err, doc) => {
+    Document.findById(req.params.id, (err, doc) => {
         if (!err) {
             res.send(doc)
         } else {
@@ -24,7 +24,7 @@ router.get("/:id", (req, res) => {
 });
 
 router.delete('/delete/:id', (req, res) => {
-    File.findByIdAndRemove(req.params.id, (err, doc) => {
+    Document.findByIdAndRemove(req.params.id, (err, doc) => {
         if (!err) {
             res.send(doc);
         } else {

@@ -9,11 +9,6 @@
                         outlined
                         v-model="folderType"
                 ></v-select>
-                <v-text-field
-                        label="Folder Name"
-                        outlined
-                        v-model="folderName"
-                ></v-text-field>
                 <v-file-input
                         :show-size="1000"
                         color="deep-purple accent-4"
@@ -89,14 +84,13 @@
                 message: '',
                 types: ["movies", "tv-series", "software", "others"],
                 folderType: '',
-                folderName: '',
             };
         },
         methods: {
             onUploadFile() {
                 const formData = new FormData();
                 this.files.forEach(file => formData.append("file_" + Math.random(), file));
-                formData.append("path", this.folderType + "\\" + this.folderName);
+                formData.append("path", this.folderType);
                 // sending file to the backend
                 axios
                     .post("http://localhost:8099/upload", formData, {
