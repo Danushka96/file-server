@@ -19,6 +19,7 @@ router.post('/', (req, res) => {
         .map(key => Math.round(req.files[key].size / 1024))
         .reduce((a, b) => a + b, 0);
     documentEarly.type = req.body.path;
+    documentEarly.name = req.body.displayName;
     documentEarly.files = Object.keys(req.files).map(key => req.files[key].name);
     documentEarly.save((err, doc) => {
         if (!err) {

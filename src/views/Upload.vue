@@ -39,6 +39,11 @@
                         </span>
                     </template>
                 </v-file-input>
+                <v-text-field
+                        label="Display Name"
+                        outlined
+                        v-model="displayName">
+                </v-text-field>
                 <div :style="{'width': progress}" class="progess-bar" v-if="progress">
                     <v-progress-linear
                             color="amber"
@@ -84,13 +89,23 @@
                 message: '',
                 types: ["movies", "tv-series", "software", "others"],
                 folderType: '',
+                displayName: '',
             };
+        },
+        watch: {
+            files: function (newVal) {
+                if (this.displayName === '') {
+                    console.log(newVal);
+                    this.displayName = newVal[0].name
+                }
+            }
         },
         methods: {
             onUploadFile() {
                 const formData = new FormData();
                 this.files.forEach(file => formData.append("file_" + Math.random(), file));
                 formData.append("path", this.folderType);
+                formData.append("displayName", this.displayName);
                 // sending file to the backend
                 axios
                     .post("http://localhost:8099/upload", formData, {
@@ -104,6 +119,7 @@
                         this.message = "Updated Successfully";
                         this.files = [];
                         this.progress = 0;
+                        this.displayName = '';
                     })
                     .catch(err => {
                         this.responseSnackBar = true;

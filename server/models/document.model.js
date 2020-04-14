@@ -5,6 +5,10 @@ let documentScheme = new mongoose.Schema({
         type: String,
         required: 'The Created date is required'
     },
+    name: {
+        type: String,
+        required: 'Document name is required'
+    },
     type: {
         type: String,
         required: 'The file Type is required'

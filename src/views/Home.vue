@@ -2,15 +2,7 @@
     <div>
         <v-content>
             <v-container>
-                <video-card></video-card>
-                <video-card></video-card>
-                <video-card></video-card>
-                <video-card></video-card>
-                <video-card></video-card>
-                <video-card></video-card>
-                <video-card></video-card>
-                <video-card></video-card>
-                <video-card></video-card>
+                <video-card :key="movie._id" :movie="movie" v-for="movie of movies"></video-card>
             </v-container>
         </v-content>
         <v-btn
@@ -28,6 +20,7 @@
 
 <script>
     import VideoCard from "../components/VideoCard";
+    import http from "../plugins/http";
 
     export default {
         components: {VideoCard},
@@ -35,7 +28,18 @@
             source: String,
         },
         data: () => ({
-            // dialog: false,
+            movies: [],
         }),
+        created() {
+            this.getMovies();
+        },
+        methods: {
+            getMovies() {
+                http.getFiles().then(result => {
+                    console.log(result);
+                    this.movies = result.data.filter(file => file.type === "movies")
+                })
+            }
+        }
     }
 </script>
