@@ -6,6 +6,7 @@
                         :key="movie._id"
                         :movie="movie"
                         :type="type"
+                        @refresh="getMovies()"
                         v-for="movie of movies">
                 </video-card>
             </v-container>

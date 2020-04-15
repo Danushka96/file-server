@@ -1,14 +1,14 @@
 require('./models/db');
 const express = require('express');
 const fileUpload = require('express-fileupload');
-
+var config = require('./config');
 const cors = require('cors');
 const fileController = require('./controllers/fileController');
 const uploadController = require('./controllers/uploadController');
 
 const app = express();
 // middle ware
-app.use(express.static('public'));
+app.use(express.static(config.FileHostPath));
 app.use(cors());
 
 app.use(fileUpload());

@@ -8,5 +8,8 @@ export default {
     },
     getBaseURL() {
         return BASEURL;
+    },
+    deleteFile(id) {
+        return axios.delete(`${BASEURL}/files/${id}`)
     }
 }

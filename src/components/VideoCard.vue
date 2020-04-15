@@ -15,8 +15,13 @@
                             <v-col sm="3">
                                 <div>{{movie.date}}</div>
                             </v-col>
-                            <v-col sm="4">
+                            <v-col sm="3">
                                 <div>{{movie.size}} KB</div>
+                            </v-col>
+                            <v-col sm="1">
+                                <v-btn @click="deleteConfirmFile()" icon>
+                                    <v-icon color="red">mdi-delete</v-icon>
+                                </v-btn>
                             </v-col>
                         </v-row>
                     </v-expansion-panel-header>
@@ -42,6 +47,40 @@
                 </v-expansion-panel>
             </v-expansion-panels>
         </v-col>
+        <v-dialog
+                max-width="290"
+                v-model="dialog"
+        >
+            <v-card>
+                <v-card-title class="headline">You Sure?</v-card-title>
+
+                <v-card-text>
+                    <h3>Deleting files:</h3>
+                    <br>
+                    <p :key="file" v-for="file of movie.files"><b>{{file}}</b></p>
+                </v-card-text>
+
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+
+                    <v-btn
+                            @click="dialog = false"
+                            color="green darken-1"
+                            text
+                    >
+                        Disagree
+                    </v-btn>
+
+                    <v-btn
+                            @click="deleteFile()"
+                            color="red darken-1"
+                            text
+                    >
+                        Agree
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </v-row>
 </template>
 
@@ -54,11 +93,24 @@
             'movie',
             'type'
         ],
-        data: () => ({}),
+        data: () => ({
+            dialog: false,
+        }),
         methods: {
             getBaseUrl() {
                 return http.getBaseURL();
-            }
+            },
+            deleteConfirmFile() {
+                this.dialog = true;
+                console.log(this.movie._id)
+            },
+            deleteFile() {
+                this.dialog = false;
+                http.deleteFile(this.movie._id).then((res => {
+                    console.log(res);
+                    this.$emit('refresh')
+                }))
+            },
         },
     }
 </script>

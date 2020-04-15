@@ -2,6 +2,8 @@ const express = require('express');
 let router = express.Router();
 const mongoose = require('mongoose');
 const Document = mongoose.model('Document');
+const rimraf = require('rimraf');
+const config = require('../config');
 
 router.get('/', (req, res) => {
     Document.find((err, docs) => {
@@ -23,12 +25,19 @@ router.get("/:id", (req, res) => {
     })
 });
 
-router.delete('/delete/:id', (req, res) => {
+router.delete('/:id', (req, res) => {
     Document.findByIdAndRemove(req.params.id, (err, doc) => {
         if (!err) {
-            res.send(doc);
+            rimraf(`${config.FileHostPath}\\${doc.type}\\${doc._id}`, function () {
+                console.log(`Document Deleted ${doc._id}`);
+                res.send(doc);
+            })
         } else {
-            console.log('Error on deleting the document ' + err)
+            console.log('Error on deleting the document ' + err);
+            res.send({
+                code: 500,
+                message: "Something went wrong"
+            })
         }
     })
 });

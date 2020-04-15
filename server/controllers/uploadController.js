@@ -3,6 +3,7 @@ let router = express.Router();
 const fs = require('fs');
 const mongoose = require('mongoose');
 const Document = mongoose.model('Document');
+const configs = require('../config');
 
 router.post('/', (req, res) => {
 
@@ -21,7 +22,7 @@ router.post('/', (req, res) => {
     documentEarly.files = Object.keys(req.files).map(key => req.files[key].name);
     documentEarly.save((err, doc) => {
         if (!err) {
-            let path = `${process.env.INIT_CWD}\\public\\${req.body.path}\\${doc._id}`;
+            let path = `${configs.FileHostPath}\\${req.body.path}\\${doc._id}`;
             fs.mkdir(path, {recursive: true}, (error) => {
                 if (error) console.log(error)
             });
