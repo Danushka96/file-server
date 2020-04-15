@@ -36,9 +36,13 @@
         data: () => ({
             drawer: null,
             items: [
-                {icon: 'mdi-contacts', text: 'Movies', path: '/home'},
-                {icon: 'mdi-history', text: 'TV Series', path: '/tv'},
-                {icon: 'mdi-content-copy', text: 'Upload', path: '/upload'},
+                {icon: 'mdi-home', text: 'Home', path: '/home'},
+                {icon: 'mdi-filmstrip', text: 'Movies', path: '/movies'},
+                {icon: 'mdi-movie-roll', text: 'TV Series', path: '/tv'},
+                {icon: 'mdi-application', text: 'Software', path: '/software'},
+                {icon: 'mdi-laptop', text: 'OS', path: '/os'},
+                {icon: 'mdi-desktop-classic', text: 'Other', path: '/other'},
+                {icon: 'mdi-upload', text: 'Upload', path: '/upload'},
             ],
             group: '',
         }),
