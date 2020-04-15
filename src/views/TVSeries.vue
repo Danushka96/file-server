@@ -1,13 +1,13 @@
 <template>
-    <v-app id="inspire">
+    <div>
         <v-content>
-            <v-container
-                    class="fill-height"
-            >
-                <v-row
-                >
-                    <video-card></video-card>
-                </v-row>
+            <v-container>
+                <video-card
+                        :key="movie._id"
+                        :movie="movie"
+                        :type="type"
+                        v-for="movie of tvSeries">
+                </video-card>
             </v-container>
         </v-content>
         <v-btn
@@ -20,14 +20,31 @@
         >
             <v-icon>mdi-plus</v-icon>
         </v-btn>
-    </v-app>
+    </div>
 </template>
 
 <script>
     import VideoCard from "../components/VideoCard";
+    import http from "../plugins/http";
+
     export default {
         name: "TVSeries",
-        components: {VideoCard}
+        components: {VideoCard},
+        data: () => ({
+            tvSeries: [],
+            type: 'tv-series'
+        }),
+        created() {
+            this.getTvSeries();
+        },
+        methods: {
+            getTvSeries() {
+                http.getFiles().then(result => {
+                    console.log(result);
+                    this.tvSeries = result.data.filter(file => file.type === "tv-series")
+                })
+            }
+        }
     }
 </script>
 

@@ -4,8 +4,6 @@ const fs = require('fs');
 const mongoose = require('mongoose');
 const Document = mongoose.model('Document');
 
-console.log(process.env.INIT_CWD)
-
 router.post('/', (req, res) => {
 
     if (!req.files) {
@@ -23,8 +21,7 @@ router.post('/', (req, res) => {
     documentEarly.files = Object.keys(req.files).map(key => req.files[key].name);
     documentEarly.save((err, doc) => {
         if (!err) {
-            let document = doc;
-            let path = `${process.env.INIT_CWD}\\public\\${req.body.path}\\${document._id}`;
+            let path = `${process.env.INIT_CWD}\\public\\${req.body.path}\\${doc._id}`;
             fs.mkdir(path, {recursive: true}, (error) => {
                 if (error) console.log(error)
             });

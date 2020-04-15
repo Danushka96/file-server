@@ -2,7 +2,12 @@
     <div>
         <v-content>
             <v-container>
-                <video-card :key="movie._id" :movie="movie" v-for="movie of movies"></video-card>
+                <video-card
+                        :key="movie._id"
+                        :movie="movie"
+                        :type="type"
+                        v-for="movie of movies">
+                </video-card>
             </v-container>
         </v-content>
         <v-btn
@@ -29,6 +34,7 @@
         },
         data: () => ({
             movies: [],
+            type: 'movies'
         }),
         created() {
             this.getMovies();
