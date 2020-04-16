@@ -11,9 +11,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "connect-busboy": "0.0.2",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-fileupload": "^1.1.6",
+    "fs-extra": "^9.0.0",
     "mongoose": "^5.9.7",
     "nodemon": "^2.0.2",
     "rimraf": "^3.0.2"

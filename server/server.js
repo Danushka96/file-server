@@ -1,17 +1,22 @@
 require('./models/db');
 const express = require('express');
-const fileUpload = require('express-fileupload');
+// const fileUpload = require('express-fileupload');
 var config = require('./config');
 const cors = require('cors');
+const fs = require('fs-extra');
 const fileController = require('./controllers/fileController');
 const uploadController = require('./controllers/uploadController');
+const busyBox = require('connect-busboy');
 
 const app = express();
 // middle ware
+fs.ensureDir(config.FileHostPath);
 app.use(express.static(config.FileHostPath));
 app.use(cors());
-
-app.use(fileUpload());
+app.use(busyBox({
+    highWaterMark: 2 * 1024 * 1024
+}));
+// app.use(fileUpload());
 
 app.use('/files', fileController);
 app.use('/upload', uploadController); // file upload api
