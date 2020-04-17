@@ -33,7 +33,7 @@
                                         <b>{{file}}</b>
                                     </v-col>
                                     <v-col sm="2">
-                                        <a :href="getBaseUrl() +'/' + type + '/' + movie._id + '/' + file"
+                                        <a :href="getBaseUrl() + '/' + movie.folderId + '/' + file"
                                            target="_blank">
                                             <v-btn icon>
                                                 <v-icon>mdi-download</v-icon>

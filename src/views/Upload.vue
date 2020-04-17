@@ -79,6 +79,7 @@
 
 <script>
     import axios from "axios";
+    import config from "../config"
 
     export default {
         data() {
@@ -94,7 +95,7 @@
         },
         watch: {
             files: function (newVal) {
-                if (this.displayName === '') {
+                if (this.displayName === '' && newVal.length > 0) {
                     console.log(newVal);
                     this.displayName = newVal[0].name
                 }
@@ -102,6 +103,7 @@
         },
         methods: {
             onUploadFile() {
+                console.log(config.BASEURL);
                 const formData = new FormData();
                 this.files.forEach(file => formData.append("file_" + Math.random(), file));
                 formData.append("path", this.folderType);
@@ -109,7 +111,7 @@
                 formData.append("fileNames", this.files.map(file => file.name).toString());
                 // sending file to the backend
                 axios
-                    .post("http://localhost:8099/upload", formData, {
+                    .post(`${config.BASEURL}/upload`, formData, {
                         onUploadProgress: ProgressEvent => {
                             this.progress = Math.round((ProgressEvent.loaded / ProgressEvent.total) * 100)
                                 + "%";
