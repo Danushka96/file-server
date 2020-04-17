@@ -28,7 +28,7 @@ router.get("/:id", (req, res) => {
 router.delete('/:id', (req, res) => {
     Document.findByIdAndRemove(req.params.id, (err, doc) => {
         if (!err) {
-            rimraf(`${config.FileHostPath}/${doc.type}/${doc._id}`, function () {
+            rimraf(`${config.FileHostPath}/${doc.folderId}`, function () {
                 console.log(`Document Deleted ${doc._id}`);
                 res.send(doc);
             })

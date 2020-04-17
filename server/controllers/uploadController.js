@@ -7,64 +7,66 @@ const configs = require('../config');
 const path = require('path');
 
 router.post('/', (req, res) => {
-
     req.pipe(req.busboy); // Pipe it trough busboy
 
-    req.busboy.on('file', (fieldname, file, filename) => {
-        console.log(`Upload of '${filename}' started`);
+    let fieldsList = {};
+    let fileList = [];
+    let id = makeid(16);
 
-        // Create a write stream of the new file
-        const fstream = fs.createWriteStream(path.join(configs.FileHostPath, filename));
-        // Pipe it trough
-        file.pipe(fstream);
-
-        // On finish of the upload
-        fstream.on('close', () => {
-            console.log(`Upload of '${filename}' finished`);
-            res.redirect('back');
-        });
+    let uploadpath = path.join(configs.FileHostPath, id);
+    fs.mkdir(uploadpath, {recursive: true}, (error) => {
+        if (error) console.log(error);
     });
 
-    // if (!req.files) {
-    //     return res.status(500).send({msg: "file is not found"})
-    // }
-    // // accessing the file
-    // let response = [];
-    // let documentEarly = new Document();
-    // documentEarly.date = getCurrentDate();
-    // documentEarly.size = Object.keys(req.files)
-    //     .map(key => Math.round(req.files[key].size / 1024))
-    //     .reduce((a, b) => a + b, 0);
-    // documentEarly.type = req.body.path;
-    // documentEarly.name = req.body.displayName;
-    // documentEarly.files = Object.keys(req.files).map(key => req.files[key].name);
-    // documentEarly.save((err, doc) => {
-    //     if (!err) {
-    //         let path = `${configs.FileHostPath}\\${req.body.path}\\${doc._id}`;
-    //         fs.mkdir(path, {recursive: true}, (error) => {
-    //             if (error) console.log(error)
-    //         });
-    //         for (let filesKey in req.files) {
-    //             let file = req.files[filesKey];
-    //             // file.mv(`${path}\\${file.name}`, function (err) {
-    //             //     if (err) {
-    //             //         console.log(err);
-    //             //         return;
-    //             //     }
-    //             //     response.push({name: file.name, path: `/${file.name}`});
-    //             // });
-    //
-    //         }
-    //         return res.status(200).send(response);
-    //     } else {
-    //         console.log("Error " + err);
-    //     }
-    // });
+    req.busboy
+        .on('file', (fieldname, file, filename) => {
+            fileList.push(filename);
+            console.log(`Upload of '${filename}' started`);
+            // Create a write stream of the new file
+            const fstream = fs.createWriteStream(path.join(uploadpath, filename));
+            // Pipe it trough
+            file.pipe(fstream);
+            // On finish of the upload
+            fstream.on('close', () => {
+                console.log(`Upload of '${filename}' finished`);
+            });
+        })
+        .on('field', (field, val) => {
+            fieldsList[field] = val;
+        })
+        .on('finish', async function() {
+            let doc = new Document();
+            doc.size = req.headers["content-length"];
+            doc.type = fieldsList.path;
+            doc.name = fieldsList.displayName;
+            doc.files = fileList;
+            doc.date = getCurrentDate();
+            doc.folderId = id;
+            console.log('finished');
+            await doc.save((err, doc) => {
+                if (err) console.error(err);
+                else console.log('doc saved with id' + doc._id);
+            });
+            res.send({
+                code: 200,
+                message: "upload successful"
+            })
+        });
 });
 
 function getCurrentDate() {
     let today = new Date();
     return today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+}
+
+function makeid(length) {
+    let result           = '';
+    let characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let charactersLength = characters.length;
+    for ( let i = 0; i < length; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
 }
 
 module.exports = router;

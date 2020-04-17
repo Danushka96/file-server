@@ -106,6 +106,7 @@
                 this.files.forEach(file => formData.append("file_" + Math.random(), file));
                 formData.append("path", this.folderType);
                 formData.append("displayName", this.displayName);
+                formData.append("fileNames", this.files.map(file => file.name).toString());
                 // sending file to the backend
                 axios
                     .post("http://localhost:8099/upload", formData, {
