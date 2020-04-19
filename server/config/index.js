@@ -1,4 +1,3 @@
 module.exports = Object.freeze({
-    FileHostPath: 'C:\\Users\\Danushka Herath\\Videos\\Films',
-    BASEURL: 'http://locahost:8099'
+    FileHostPath: (process.env.NODE_ENV === 'development') ? 'C:\\Users\\Danushka Herath\\Videos\\Films' : '/home/file-server',
 });
