@@ -1,14 +1,8 @@
 <template>
-    <v-content>
+<!--    <v-content>-->
         <v-container
         >
             <div class="file-upload">
-                <v-select
-                        :items="types"
-                        label="Upload File Type"
-                        outlined
-                        v-model="folderType"
-                ></v-select>
                 <v-file-input
                         :show-size="1000"
                         color="deep-purple accent-4"
@@ -53,7 +47,7 @@
                     ></v-progress-linear>
                     {{progress}}
                 </div>
-                <button :disabled="!this.files.length > 0" @click="onUploadFile"
+                <button :disabled="!this.files.length > 0 && uploadBtn" @click="onUploadFile"
                         class="upload-button">Upload file
                 </button>
             </div>
@@ -74,7 +68,7 @@
                 </v-btn>
             </v-snackbar>
         </v-container>
-    </v-content>
+    <!--    </v-content>-->
 </template>
 
 <script>
@@ -82,33 +76,35 @@
     import config from "../config"
 
     export default {
+        name: 'Upload',
+        props: [
+            'type'
+        ],
         data() {
             return {
                 progress: 0,
                 files: [],
                 responseSnackBar: '',
                 message: '',
-                types: ["movies", "tv-series", "software", "others"],
-                folderType: '',
                 displayName: '',
+                uploadBtn: true,
             };
         },
         watch: {
             files: function (newVal) {
                 if (this.displayName === '' && newVal.length > 0) {
                     console.log(newVal);
-                    this.displayName = newVal[0].name
+                    this.displayName = newVal[0].name.replace(/\./g, ' ');
                 }
             }
         },
         methods: {
             onUploadFile() {
-                console.log(config.BASEURL);
+                this.uploadBtn = false;
                 const formData = new FormData();
                 this.files.forEach(file => formData.append("file_" + Math.random(), file));
-                formData.append("path", this.folderType);
+                formData.append("path", this.type);
                 formData.append("displayName", this.displayName);
-                formData.append("fileNames", this.files.map(file => file.name).toString());
                 // sending file to the backend
                 axios
                     .post(`${config.BASEURL}/upload`, formData, {
@@ -119,10 +115,11 @@
                     })
                     .then(() => {
                         this.responseSnackBar = true;
-                        this.message = "Updated Successfully";
+                        this.message = "Uploaded Successfully";
                         this.files = [];
                         this.progress = 0;
                         this.displayName = '';
+                        this.$store.dispatch('getFiles');
                     })
                     .catch(err => {
                         this.responseSnackBar = true;
@@ -143,8 +140,7 @@
         flex-direction: column;
         justify-content: space-between;
         font-size: 1rem;
-        width: 60%;
-        margin: 0 auto;
+        margin: -10px -10px -10px -10px;
     }
 
     input {

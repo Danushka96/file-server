@@ -16,34 +16,13 @@ const routes = [
             component: () => import('../views/Home')
         },
         {
-            name: 'Home',
-            path: '/movies',
-            component: () => import('../views/Movies')
+            name: 'Files',
+            path: '/files',
+            component: () => import('../views/Files')
         },
         {
-            name: 'TVSeries',
-            path: '/tv',
-            component: () => import('../views/TVSeries')
-        },
-        {
-            name: 'Software',
-            path: '/software',
-            component: () => import('../views/Software')
-        },
-        {
-            name: 'OS',
-            path: '/os',
-            component: () => import('../views/OS')
-        },
-        {
-            name: 'Other',
-            path: '/other',
-            component: () => import('../views/Other')
-        },
-        {
-            name: 'Upload',
-            path: '/upload',
-            component: () => import('../views/Upload')
+            path: '*',
+            redirect: '/home'
         }
     ]
   },

@@ -1,7 +1,6 @@
 require('./models/db');
 const express = require('express');
-// const fileUpload = require('express-fileupload');
-var config = require('./config');
+let config = require('./config');
 const cors = require('cors');
 const fs = require('fs-extra');
 const fileController = require('./controllers/fileController');
@@ -14,9 +13,8 @@ fs.ensureDir(config.FileHostPath);
 app.use(express.static(config.FileHostPath));
 app.use(cors());
 app.use(busyBox({
-    highWaterMark: 2 * 1024 * 1024
+    highWaterMark: 2 * 1024 * 1024 // 2 MB
 }));
-// app.use(fileUpload());
 
 app.use('/files', fileController);
 app.use('/upload', uploadController); // file upload api

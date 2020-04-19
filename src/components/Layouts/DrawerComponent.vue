@@ -36,19 +36,21 @@
         data: () => ({
             drawer: null,
             items: [
-                {icon: 'mdi-home', text: 'Home', path: '/home'},
-                {icon: 'mdi-filmstrip', text: 'Movies', path: '/movies'},
-                {icon: 'mdi-movie-roll', text: 'TV Series', path: '/tv'},
-                {icon: 'mdi-application', text: 'Software', path: '/software'},
-                {icon: 'mdi-laptop', text: 'OS', path: '/os'},
-                {icon: 'mdi-desktop-classic', text: 'Other', path: '/other'},
-                {icon: 'mdi-upload', text: 'Upload', path: '/upload'},
+                {icon: 'mdi-filmstrip', text: 'Movies', path: 'movies'},
+                {icon: 'mdi-movie-roll', text: 'TV Series', path: 'tv-series'},
+                {icon: 'mdi-application', text: 'Software', path: 'software'},
+                {icon: 'mdi-laptop', text: 'OS', path: 'os'},
+                {icon: 'mdi-desktop-classic', text: 'Other', path: 'other'},
             ],
-            group: '',
+            group: 0,
         }),
         methods: {
             redirect(path) {
-                this.$router.push(path)
+                if (this.$route.path !== "/files") {
+                    this.$router.push('/files')
+                }
+                //this.$router.push(path)
+                this.$store.commit('SET_TYPE', path);
             }
         }
     }

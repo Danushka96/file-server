@@ -1,7 +1,7 @@
 <template>
     <v-row justify="center">
-        <v-col sm="10">
-            <v-expansion-panels class="mb-6" dark>
+        <v-col sm="10" style="margin-bottom: -30px">
+            <v-expansion-panels class="mb-6">
                 <v-expansion-panel
                 >
                     <v-expansion-panel-header expand-icon="mdi-menu-down">
@@ -16,7 +16,7 @@
                                 <div>{{movie.date}}</div>
                             </v-col>
                             <v-col sm="3">
-                                <div>{{movie.size}} KB</div>
+                                <div>{{Math.round(movie.size / (1024 * 1024))}} MB</div>
                             </v-col>
                             <v-col sm="1">
                                 <v-btn @click="deleteConfirmFile()" icon>
@@ -26,7 +26,7 @@
                         </v-row>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content>
-                        <v-card :key="file.name" flat hover v-for="file of movie.files">
+                        <v-card :key="file.name" flat v-for="file of movie.files">
                             <v-card-text>
                                 <v-row>
                                     <v-col sm="10">
@@ -108,7 +108,7 @@
                 this.dialog = false;
                 http.deleteFile(this.movie._id).then((res => {
                     console.log(res);
-                    this.$emit('refresh')
+                    this.$store.dispatch('getFiles');
                 }))
             },
         },
