@@ -1,6 +1,7 @@
 import axios from "axios";
+import config from "../config"
 
-const BASEURL = "http://localhost:8099";
+const BASEURL = config.BASEURL;
 
 export default {
     getFiles() {
